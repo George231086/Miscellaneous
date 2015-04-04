@@ -5,7 +5,7 @@ https://www.youtube.com/watch?v=E45v2dD3IQU&index=8&list=PL82YdDfxhWsC-3kdTKK2_m
 to create an object wanderer which has the states moving forward, backwards, left or right. Using pygame I've 
 hooked this up to a simple frame. The wanderer is represented by a rectangle and just aimlessly moves around the window.
 I'll add more states such as changing colour as I continue working on it. My aim is to the fill the frame with
-moving objects and add some behaviour for when they collide. Also need to 
+moving objects and add some behaviour for when they collide.
 
 '''
 
