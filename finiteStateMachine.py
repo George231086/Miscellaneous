@@ -3,9 +3,8 @@
 Unfinished. I've modified the finite state machine implementation found in the youtube video 
 https://www.youtube.com/watch?v=E45v2dD3IQU&index=8&list=PL82YdDfxhWsC-3kdTKK2_mwbNdBfVvb_M
 to create an object wanderer which has the states moving forward, backwards, left or right. Using pygame I've 
-hooked this up to a simple frame. The wanderer is represented by a rectangle and just aimlessly moves around the window.
-I'll add more states such as changing colour as I continue working on it. My aim is to the fill the frame with
-moving objects and add some behaviour for when they collide.
+hooked this up to a simple frame. The wanderer is represented by a square and just aimlessly moves around the window.
+Wanderers change colour when they overlap. Will add more behavior...
 
 '''
 
@@ -13,6 +12,7 @@ import pygame, sys
 from pygame.locals import *
 from random import randint
 from time import clock
+import math
 
 BLACK=(0,0,0)
 WHITE=(255,255,255)
@@ -28,8 +28,8 @@ class Transition(object):
         self.toState=toState
         
     def Execute(self):
-        print 'Transitioning'
-        
+        #print 'Transitioning'
+        pass
         
 class State(object):
     
@@ -54,11 +54,11 @@ class MovingLeft(State):
         super(MovingLeft,self).__init__(FSM)
     
     def Enter(self):
-        print "starting to move left"
+        #print "starting to move left"
         super(MovingLeft,self).Enter()
     
     def Execute(self):
-        print "moving left"
+        #print "moving left"
         self.FSM.alterCoords(-10,0)
         self.FSM.signalChange()
         if (self.startTime+self.timer<=clock()):
@@ -66,7 +66,10 @@ class MovingLeft(State):
             self.FSM.ToTransition(trans)    
                 
     def Exit(self):
-        print 'finished moving left'    
+        #print 'finished moving left'
+        pass
+        
+           
         
 class MovingRight(State):
     
@@ -74,11 +77,11 @@ class MovingRight(State):
         super(MovingRight,self).__init__(FSM)
     
     def Enter(self):
-        print "starting to move right"
+        #print "starting to move right"
         super(MovingRight,self).Enter()
     
     def Execute(self):
-        print "moving Right"
+        #print "moving Right"
         self.FSM.alterCoords(10,0)
         self.FSM.signalChange()
         if (self.startTime+self.timer<=clock()):
@@ -86,7 +89,10 @@ class MovingRight(State):
             self.FSM.ToTransition(trans)    
             
     def Exit(self):
-        print 'finished moving right'        
+        #print 'finished moving right'
+        pass
+        
+                
 
 class MovingUp(State):
     
@@ -94,11 +100,11 @@ class MovingUp(State):
         super(MovingUp,self).__init__(FSM)
         
     def Enter(self):
-        print "starting to move up"
+        #print "starting to move up"
         super(MovingUp,self).Enter()
     
     def Execute(self):
-        print "moving up"
+        #print "moving up"
         self.FSM.alterCoords(0,-10)
         self.FSM.signalChange()
         if (self.startTime+self.timer<=clock()):
@@ -106,18 +112,21 @@ class MovingUp(State):
             self.FSM.ToTransition(trans)    
             
     def Exit(self):
-        print 'finished moving up'    
+        #print 'finished moving up'
+        pass    
         
+
 class MovingDown(State):
     def __init__(self,FSM):
         super(MovingDown,self).__init__(FSM)
         
     def Enter(self):
-        print "starting to move down"
+        #print "starting to move down"
+        self.FSM.signalChange()
         super(MovingDown,self).Enter()
     
     def Execute(self):
-        print "moving down"
+        #print "moving down"
         self.FSM.alterCoords(0,10)
         self.FSM.signalChange()
         if (self.startTime+self.timer<=clock()):
@@ -125,7 +134,8 @@ class MovingDown(State):
             self.FSM.ToTransition(trans)    
             
     def Exit(self):
-        print 'finished moving down'        
+        #print 'finished moving down'  
+        pass      
         
 class FSM(object):
     
@@ -154,7 +164,7 @@ class FSM(object):
     
     def alterCoords(self,x,y):
     	width,height = self.canvasObj.canvas.get_size()
-        print self.coords['x'], self.coords['y'],width,height
+        #print self.coords['x'], self.coords['y'],width,height
         if (0 <= (self.coords['x']+x) and (self.coords['x']+x+20) <= width):
             self.coords['x']+=x
     	if (0 <= (self.coords['y']+y) and (self.coords['y']+y+20) <= height):
@@ -184,15 +194,29 @@ class CanvasObject(object):
         pygame.init()
         self.canvas=pygame.display.set_mode((500,400),0,32)
         pygame.display.set_caption('Wanderers')
-        self.fpsClock=pygame.time.Clock()
+        #self.fpsClock=pygame.time.Clock()
         self.canvas.fill(WHITE)
         self.objectCoords=[]
     
     def drawObjects(self):
         self.canvas.fill(WHITE)
         for coords in self.objectCoords:
-            pygame.draw.rect(self.canvas,RED,(coords['x'],coords['y'],20,20))
-    
+            collided = False
+            for coords2 in self.objectCoords:
+                if CanvasObject.hasCollided(coords,coords2) and coords!=coords2:
+                    pygame.draw.rect(self.canvas,RED,(coords['x'],coords['y'],20,20))                     
+                    pygame.draw.rect(self.canvas,RED,(coords2['x'],coords2['y'],20,20)) 
+                    collided=True 
+            if not collided:
+                pygame.draw.rect(self.canvas,BLACK,(coords['x'],coords['y'],20,20))
+
+
+    @staticmethod                    
+    def hasCollided(obj1,obj2):
+        x1, y1 = obj1['x'],obj1['y']
+        x2, y2 = obj2['x'],obj2['y']
+        return (x1-x2)**2+(y1-y2)**2<=2*(20**2)
+
     def Update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -200,7 +224,7 @@ class CanvasObject(object):
                 sys.exit()
 		self.drawObjects()
         pygame.display.update()
-        self.fpsClock.tick(FPS)
+        #self.fpsClock.tick(FPS)
     
 
 class Wanderer(Char):
@@ -230,7 +254,7 @@ if __name__=='__main__':
     width,height = c.canvas.get_size()	
     
     wanderers=[Wanderer(c,(randint(0,48)*10,randint(0,38)*10)) for i in range(10)]
-
+    
     while True:
         startTime=clock()
         timeInterval=1
@@ -238,3 +262,4 @@ if __name__=='__main__':
             pass
         for wanderer in wanderers:
             wanderer.Execute()
+        
