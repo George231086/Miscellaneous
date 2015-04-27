@@ -1,10 +1,10 @@
 '''
 
-Unfinished. I've modified the finite state machine implementation found in the youtube video 
+I've modified the finite state machine implementation found in the youtube video 
 https://www.youtube.com/watch?v=E45v2dD3IQU&index=8&list=PL82YdDfxhWsC-3kdTKK2_mwbNdBfVvb_M
 to create an object wanderer which has the states moving forward, backwards, left or right. Using pygame I've 
 hooked this up to a simple frame. The wanderer is represented by a square and just aimlessly moves around the window.
-Wanderers change colour when they overlap. Will add more behavior...
+Wanderers change colour when they overlap. 
 
 '''
 
