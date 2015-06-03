@@ -1,0 +1,19 @@
+#!/bin/bash
+# Remove results file from previous run.
+if [ -f python_results.txt ];
+then
+rm python_results.txt
+fi
+# Start collecting winners.
+echo 'Beginning battles.'
+count=0
+for i in `seq 1 1000`;
+do
+python python_scripts/battle_game.py >> python_results.txt
+((++count))
+done
+echo 'Battles finished.'
+#Announce results.
+echo "Out of $count battles:"
+echo "Hero won: $(grep victorious python_results.txt|grep Hero -c)"
+echo "Villain won: $(grep victorious python_results.txt|grep Villain -c)"
