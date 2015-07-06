@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 sum=0
 for i in {0..999}
 do
