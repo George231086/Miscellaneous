@@ -1,0 +1,12 @@
+#!bin/bash
+sum=0
+for i in {0..999}
+do
+    if [ $(($i%3)) = 0 ]
+    then
+        sum=$(($sum+$i))
+        continue
+    fi
+    [ $(($i%5)) = 0 ] && sum=$(($sum+$i))
+done
+echo $sum
