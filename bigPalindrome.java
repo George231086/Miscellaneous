@@ -2,11 +2,11 @@
  * 
  * @author george
  * 
- *         Solution to project Euler question 4. Find the biggest palindrome
+ *         Program to find the biggest palindrome
  *         that can factored into the product of two 3 digit numbers.
  */
 
-public class Prob4e {
+public class bigPalindrome {
 
 	public static void main(String args[]) {
 
@@ -22,7 +22,7 @@ public class Prob4e {
 					isPal = false;
 
 			}
-			// Check if a palindromes whether it can be factored into two 3
+			// If a palindrome, check whether it can be factored into two 3
 			// digit numbers.
 			if (isPal) {
 				for (int k = 999; k > 99; k--) {
