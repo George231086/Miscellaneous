@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Solution to project Euler q1 using bash.
+# Sum of multiples of 2 and 5 less than 1000 using bash.
 sum=0
 for i in {0..999}
 do
