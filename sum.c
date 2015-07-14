@@ -1,4 +1,4 @@
-/* Problem 2 project Euler, find sum of even Fibonacci numbers < 4,000,000.*/
+/* Find sum of even Fibonacci numbers < 4,000,000.*/
 #include<stdio.h>
 
 int main()
@@ -19,7 +19,7 @@ int main()
 
     }
 
-    printf("Answer is %\d",sum);
+    printf("Sum of Fibonacci numbers < 4,000,000  is %\d",sum);
 
     return 0;
 }
